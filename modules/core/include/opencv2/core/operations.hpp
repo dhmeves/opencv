@@ -349,6 +349,8 @@ inline int    RNG::uniform(int a, int b)       { return a == b ? a : (int)(next(
 inline float  RNG::uniform(float a, float b)   { return ((float)*this)*(b - a) + a; }
 inline double RNG::uniform(double a, double b) { return ((double)*this)*(b - a) + a; }
 
+inline bool RNG::operator ==(const RNG& other) const { return state == other.state; }
+
 inline unsigned RNG::next()
 {
     state = (uint64)(unsigned)state* /*CV_RNG_COEFF*/ 4164903690U + (unsigned)(state >> 32);
@@ -363,6 +365,12 @@ template<typename _Tp> static inline _Tp randu()
 
 ///////////////////////////////// Formatted string generation /////////////////////////////////
 
+/** @brief Returns a text string formatted using the printf-like expression.
+
+The function acts like sprintf but forms and returns an STL string. It can be used to form an error
+message in the Exception constructor.
+@param fmt printf-compatible formatting specifiers.
+ */
 CV_EXPORTS String format( const char* fmt, ... );
 
 ///////////////////////////////// Formatted output of cv::Mat /////////////////////////////////
