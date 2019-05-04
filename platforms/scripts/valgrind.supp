@@ -13,6 +13,20 @@
 }
 
 {
+   OpenCV-SingletonBuffer
+   Memcheck:Leak
+   ...
+   fun:_ZN2cv20allocSingletonBufferEm
+}
+
+{
+   OpenCV-SingletonNewBuffer
+   Memcheck:Leak
+   ...
+   fun:_ZN2cv23allocSingletonNewBufferEm
+}
+
+{
    OpenCV-getStdAllocator
    Memcheck:Leak
    ...
@@ -125,6 +139,13 @@
    Memcheck:Leak
    fun:_Znwm
    fun:_ZNK2cv7TLSDataINS_11CoreTLSDataEE18createDataInstanceEv
+}
+
+{
+   OpenCV-UMatDataAutoLockerTLS
+   Memcheck:Leak
+   ...
+   fun:_ZN2cvL21getUMatDataAutoLockerEv
 }
 
 {

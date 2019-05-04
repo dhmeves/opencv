@@ -3,15 +3,18 @@
 // of this distribution and at http://opencv.org/license.html.
 
 #include "test_precomp.hpp"
-#ifdef HAVE_GSTREAMER
 
 namespace opencv_test
 {
-typedef tuple< string, Size, Size, int > Param;
-typedef testing::TestWithParam< Param > Videoio_Gstreamer_Test;
 
-TEST_P(Videoio_Gstreamer_Test, test_object_structure)
+typedef tuple< string, Size, Size, int > Param;
+typedef testing::TestWithParam< Param > videoio_gstreamer;
+
+TEST_P(videoio_gstreamer, read_write)
 {
+    if (!videoio_registry::hasBackend(CAP_GSTREAMER))
+        throw SkipTestException("GStreamer backend was not found");
+
     string format    = get<0>(GetParam());
     Size frame_size  = get<1>(GetParam());
     Size mat_size    = get<2>(GetParam());
@@ -19,8 +22,9 @@ TEST_P(Videoio_Gstreamer_Test, test_object_structure)
     int count_frames = 10;
     std::ostringstream pipeline;
     pipeline << "videotestsrc pattern=ball num-buffers=" << count_frames << " ! " << format;
-    pipeline << ", framerate=1/1, width=" << frame_size.width << ", height=" << frame_size.height << " ! appsink";
-    VideoCapture cap(pipeline.str(), CAP_GSTREAMER);
+    pipeline << ", width=" << frame_size.width << ", height=" << frame_size.height << " ! appsink";
+    VideoCapture cap;
+    ASSERT_NO_THROW(cap.open(pipeline.str(), CAP_GSTREAMER));
     ASSERT_TRUE(cap.isOpened());
 
     Mat buffer, decode_frame, gray_frame, rgb_frame;
@@ -67,8 +71,6 @@ Param test_data[] = {
     make_tuple("jpegenc ! image/jpeg"     , Size(640, 480), Size(640, 480), COLOR_BGR2RGB)
 };
 
-INSTANTIATE_TEST_CASE_P(videoio, Videoio_Gstreamer_Test, testing::ValuesIn(test_data));
+INSTANTIATE_TEST_CASE_P(videoio, videoio_gstreamer, testing::ValuesIn(test_data));
 
 } // namespace
-
-#endif
