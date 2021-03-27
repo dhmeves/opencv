@@ -60,18 +60,18 @@ namespace cv
 namespace dnn
 {
 void getConvolutionKernelParams(const LayerParams &params, std::vector<size_t>& kernel, std::vector<size_t>& pads_begin,
-                                std::vector<size_t>& pads_end, std::vector<size_t>& strides, std::vector<size_t>& dilations, cv::String &padMode);
+                                std::vector<size_t>& pads_end, std::vector<size_t>& strides, std::vector<size_t>& dilations,
+                                cv::String &padMode, std::vector<size_t>& adjust_pads);
 
-void getPoolingKernelParams(const LayerParams &params, std::vector<size_t>& kernel, bool &globalPooling,
+void getPoolingKernelParams(const LayerParams &params, std::vector<size_t>& kernel, std::vector<bool>& globalPooling,
                             std::vector<size_t>& pads_begin, std::vector<size_t>& pads_end, std::vector<size_t>& strides, cv::String &padMode);
 
 void getConvPoolOutParams(const std::vector<int>& inp, const std::vector<size_t>& kernel,
                           const std::vector<size_t>& stride, const String &padMode,
                           const std::vector<size_t>& dilation, std::vector<int>& out);
 
- void getConvPoolPaddings(const std::vector<int>& inp, const std::vector<int>& out,
-                          const std::vector<size_t>& kernel, const std::vector<size_t>& strides,
-                          const String &padMode, const std::vector<size_t>& dilation,
+ void getConvPoolPaddings(const std::vector<int>& inp, const std::vector<size_t>& kernel,
+                          const std::vector<size_t>& strides, const String &padMode,
                           std::vector<size_t>& pads_begin, std::vector<size_t>& pads_end);
 }
 }
